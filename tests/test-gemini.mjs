@@ -4,34 +4,7 @@
 import {
   generateCompanionResponse,
   generateEducationalContent,
-  generateSafetyPlanSuggestions,
-  matchTherapists
 } from '../src/lib/gemini.js';
-
-const MOCK_THERAPIST_POOL = [
-  {
-    id: 'therapist_1',
-    name: 'Dr. Aarav Mehta',
-    role: 'Licensed Clinical Psychologist',
-    gender: 'Male',
-    specialties: ['Substance Use Disorders', 'CBT'],
-    experience: '12 years',
-    location: 'Mumbai, India',
-    style: 'Structured',
-    avatar: '👨‍⚕️'
-  },
-  {
-    id: 'therapist_2',
-    name: 'Dr. Priya Sharma',
-    role: 'Accredited Counselor',
-    gender: 'Female',
-    specialties: ['Anxiety', 'Relapse Prevention'],
-    experience: '9 years',
-    location: 'Delhi, India',
-    style: 'Holistic',
-    avatar: '👩‍⚕️'
-  }
-];
 
 async function runTests() {
   console.log('🧪 Starting Active Functions Verification...\n');
@@ -86,35 +59,6 @@ async function runTests() {
     failedCount++;
   }
 
-  // Test 4: Safety Plan Suggestions
-  try {
-    console.log('\n4. Testing generateSafetyPlanSuggestions...');
-    const result = await generateSafetyPlanSuggestions('Warning Signs', { recoveryStage: 'early' });
-    console.log(`   Suggestions count: ${result.suggestions?.length || 0}`);
-    assert(Array.isArray(result.suggestions) && result.suggestions.length > 0, 'Safety plan suggestions returned as a valid array');
-  } catch (err) {
-    console.error('Test 4 failed with error:', err);
-    failedCount++;
-  }
-
-  // Test 5: Therapist Matching Engine
-  try {
-    console.log('\n5. Testing matchTherapists...');
-    const matches = await matchTherapists({
-      challenges: ['Coping with cravings'],
-      symptoms: ['High anxiety'],
-      communicationStyle: 'Direct',
-      genderPreference: 'No Preference',
-      coords: { latitude: 19.076, longitude: 72.877 } // Near Mumbai
-    }, MOCK_THERAPIST_POOL);
-    
-    console.log(`   Matched count: ${matches?.length || 0}`);
-    assert(Array.isArray(matches) && matches.length > 0, 'Therapists matched and reasons populated');
-  } catch (err) {
-    console.error('Test 5 failed with error:', err);
-    failedCount++;
-  }
-
   // Print Summary
   console.log('\n=======================================');
   console.log(`📊 Test Summary: Passed = ${passedCount}, Failed = ${failedCount}`);
@@ -123,7 +67,7 @@ async function runTests() {
   if (failedCount > 0) {
     process.exit(1);
   } else {
-    console.log('✨ All tests completed successfully! ✅');
+    console.log('✨ All active function tests completed successfully! ✅');
   }
 }
 

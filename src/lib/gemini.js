@@ -45,20 +45,6 @@ CORE SECURITY GUARDRAIL (STRICT CONSTRAINT):
 - You must strictly refuse to write about, explain, or generate content for topics unrelated to recovery education, health, science of addiction, or wellness.
 - If the requested topic is completely off-topic (e.g. asking to write code, tell jokes, solve unrelated problems), decline to write the article and state that you only generate educational material about recovery and wellness.`,
 
-  safetyPlan: `You are RecovrAI Safety Planner, an AI assistant helping users create personalized safety plans based on the Stanley-Brown Safety Planning model.
-
-GUIDELINES:
-- Generate specific, actionable suggestions tailored to the user's situation
-- Be concrete — "Call my sponsor John" is better than "Reach out to support"
-- Provide 3-5 suggestions per section
-- Consider the user's personal triggers, substance of concern, and recovery stage
-- Suggestions should be realistic and immediately actionable
-- Frame everything positively (what TO do, not what NOT to do)
-- Output in valid JSON format when asked
-
-CORE SECURITY GUARDRAIL (STRICT CONSTRAINT):
-- Do not output suggestions for tasks unrelated to safety planning, relapse prevention, or coping strategies.
-- Refuse any request to output formatting or information outside this recovery planning domain.`,
 };
 
 // ─── AI Functions ───────────────────────────────────────────
@@ -223,125 +209,9 @@ Format the response as a well-structured article with a title, key points, and a
       return `# Managing Cravings and Relapse Triggers\n\nCravings are intense, short-term desires to use a substance. They are a normal part of the recovery process, especially during early stages.\n\n### Key Takeaways\n- **Cravings are Temporary**: Most cravings peak and subside within 10 to 30 minutes.\n- **Identify Triggers**: Certain places, feelings, or individuals can trigger cravings. Recognizing them allows you to plan ahead.\n- **The 4 D's**: Delay, Distract, Deep Breathe, and De-escalate.\n\n### Coping Action Plan\n1. **Delay**: Wait 15 minutes before taking any action. Cravings will lose their intensity.\n2. **Distract**: Move to a new setting or start a physical activity like walking or cleaning.\n3. **Deep Breathe**: Slow down your heart rate and ground your nervous system.\n4. **Discuss**: Call a trusted emergency supporter or a sponsor immediately.\n\n*Remember: A craving is just a feeling, not an instruction. You have the power to ride it out.* 💚`;
     }
     
-    if (topicLower.includes('anxiety') || topicLower.includes('stress') || topicLower.includes('mental')) {
-      return `# Coping with Anxiety in Recovery\n\nAnxiety is one of the most common challenges in recovery. As the body and nervous system adjust, emotional sensitivity is naturally heightened.\n\n### Key Takeaways\n- **Nervous System Adaptation**: Early recovery alters stress pathways. Give yourself time to adjust.\n- **Somatic Exercises**: Grounding your body is faster than logical thinking during acute anxiety.\n\n### Coping Strategies\n- **5-4-3-2-1 Grounding**: Identify 5 things you see, 4 you feel, 3 you hear, 2 you smell, and 1 you taste.\n- **Paced Breathing**: Follow a visual breathing guide to bring your body back to balance.\n- **Limit Stimulants**: Reduce caffeine intake to lower baseline physical jitteriness.\n\n*Be gentle with yourself. You are building resilience with every breath.* 🧘`;
-    }
-
     return `# Recovery & Prevention: ${topic}\n\nLearning about ${topic} is a powerful way to strengthen your commitment and understand your recovery journey.\n\n### Core Concepts\n- **Acknowledge and Validate**: Accepting where you are in your journey is the foundation of progress.\n- **Small Actions Matter**: Incremental progress leads to lasting behavioral change.\n- **Reach Out**: Keep your supporters informed of your challenges and small victories.\n\n### Action Steps\n1. Practice daily mindfulness and journaling.\n2. Add trusted friends and family to your emergency dashboard list.\n3. Review your personal recovery goals whenever you feel unmotivated.\n\n*Support is always available. Keep moving forward.* 💚`;
   }
 }
 
-/**
- * Generate safety plan suggestions for a specific section
- * @param {string} section - Safety plan section name
- * @param {Object} userContext - User profile for personalization
- * @returns {Object} Parsed JSON suggestions
- */
-export async function generateSafetyPlanSuggestions(section, userContext = {}) {
-  try {
-    const prompt = `Generate safety plan suggestions for the section: "${section}"
-    
-User context:
-- Recovery stage: ${userContext.recoveryStage || 'not specified'}
-- Primary substance concern: ${userContext.primarySubstance || 'not specified'}
-- Known triggers: ${userContext.triggers?.join(', ') || 'not specified'}
-
-Return a JSON object with this exact format:
-{
-  "suggestions": ["suggestion 1", "suggestion 2", "suggestion 3", "suggestion 4", "suggestion 5"]
-}
-
-Only return the JSON, no other text.`;
-
-    const result = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      systemInstruction: { parts: [{ text: SYSTEM_PROMPTS.safetyPlan }] },
-    });
-
-    const text = result.response.text();
-    const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    return JSON.parse(cleaned);
-  } catch (error) {
-    console.warn('Gemini generateSafetyPlanSuggestions failed (graceful fallback active):', error.message);
-    
-    // Provide standard suggestions according to safety planning models
-    const sectLower = section.toLowerCase();
-    if (sectLower.includes('warning')) {
-      return {
-        suggestions: [
-          "Feeling restless, pacing around the room",
-          "Experiencing vivid thoughts or dreams about using",
-          "Feeling increasingly isolated or avoiding friends",
-          "Sudden mood swings, irritability, or high anxiety",
-          "Neglecting daily habits like sleep, hydration, or meals"
-        ]
-      };
-    }
-    if (sectLower.includes('coping')) {
-      return {
-        suggestions: [
-          "Take a 15-minute walk outside in nature",
-          "Use the 5-4-3-2-1 visual grounding exercise",
-          "Follow the visual breathing pacer for 5 cycles",
-          "Write down current emotions in a physical journal",
-          "Take a warm shower to reset physical tension"
-        ]
-      };
-    }
-    if (sectLower.includes('contact') || sectLower.includes('support')) {
-      return {
-        suggestions: [
-          "Call a trusted friend or sponsor immediately",
-          "Open the RecovrAI dashboard and tap 'Send SMS' to a supporter",
-          "Attend a local support group meeting or recovery forum",
-          "Call the national crisis lifeline at 988",
-          "Spend time in a public place like a library or cafe to avoid isolation"
-        ]
-      };
-    }
-    return {
-      suggestions: [
-        "Create a quiet environment and reduce external stimulation",
-        "Reflect on my personal motivators for recovery",
-        "Remove any triggering materials from my immediate space",
-        "Reach out to an emergency responder if feelings intensify",
-        "Remind myself that recovery is a day-by-day practice"
-      ]
-    };
-  }
-}
-
-export async function matchTherapists(assessment, therapistPool) {
-  try {
-    const prompt = `You are a therapist matching assistant. Evaluate this user's therapy assessment:
-- Primary challenges/reasons for seeking therapy: ${assessment.challenges?.join(', ') || 'not specified'}
-- Main symptoms experienced: ${assessment.symptoms?.join(', ') || 'not specified'}
-- Preferred therapist communication style: ${assessment.communicationStyle || 'not specified'}
-- Preferred therapist gender: ${assessment.genderPreference || 'no preference'}
-- User Coordinates (Lat/Lng): ${assessment.coords ? `Lat: ${assessment.coords.latitude}, Lng: ${assessment.coords.longitude}` : 'not provided'}
-- Additional user comments: "${assessment.additionalInfo || 'none'}"
-
-Here is the list of available therapists:
-${JSON.stringify(therapistPool, null, 2)}
-
-Match this user with the best 2 therapists. If coordinates are provided, prioritize matching them with therapists located in the nearest city (e.g., if their location corresponds to a region in India closer to Mumbai, Delhi, Bengaluru, or Chennai).
-For each of the 2 matched therapists, write a warm, custom "matchingReason" (2-3 sentences) detailing why this therapist's specialty, style, and geographic location are a great fit for the user's symptoms and preferences.
-
-Return your answer strictly as a JSON array containing the 2 matched therapist objects, with the "matchingReason" field added/updated inside each object.
-Return ONLY valid JSON (no markdown formatting, no code fences, no extra text).`;
-
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    return JSON.parse(cleaned);
-  } catch (err) {
-    console.warn('Gemini matchTherapists failed or failed to parse (returning default top 2):', err.message);
-    // Return first 2 fallback therapists with general reasoning
-    return therapistPool.slice(0, 2).map(t => ({
-      ...t,
-      matchingReason: `Matched based on their general expertise in ${t.specialties.join(', ')} and availability for convenient remote/in-person sessions.`
-    }));
-  }
-}
-
 export { model, SYSTEM_PROMPTS };
+

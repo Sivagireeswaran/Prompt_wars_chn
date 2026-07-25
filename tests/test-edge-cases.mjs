@@ -4,23 +4,7 @@
 import {
   generateCompanionResponse,
   generateEducationalContent,
-  generateSafetyPlanSuggestions,
-  matchTherapists
 } from '../src/lib/gemini.js';
-
-const MOCK_THERAPIST_POOL = [
-  {
-    id: 'therapist_1',
-    name: 'Dr. Aarav Mehta',
-    role: 'Licensed Clinical Psychologist',
-    gender: 'Male',
-    specialties: ['Substance Use Disorders', 'CBT'],
-    experience: '12 years',
-    location: 'Mumbai, India',
-    style: 'Structured',
-    avatar: '👨‍⚕️'
-  }
-];
 
 async function runEdgeCaseTests() {
   console.log('🧪 Starting Edge Cases & Safety Guardrail Verification...\n');
@@ -68,25 +52,6 @@ async function runEdgeCaseTests() {
     assert(!containsAuditoryRecommendations, 'Deaf mode correctly bypassed auditory exercises and recommended physical/visual techniques');
   } catch (err) {
     console.error('Edge Case 2 failed:', err);
-    failedCount++;
-  }
-
-  // Edge Case 3: Geolocation Match with Invalid/Missing Coordinates
-  try {
-    console.log('\n3. Testing Geolocation Match with Invalid Coordinates...');
-    const matches = await matchTherapists({
-      challenges: ['Anxiety'],
-      symptoms: ['Stress'],
-      communicationStyle: 'Compassionate',
-      genderPreference: 'No Preference',
-      // Send malformed coordinate structures
-      coords: { latitude: 'not-a-number', longitude: {} }
-    }, MOCK_THERAPIST_POOL);
-    
-    console.log(`   Matched count: ${matches?.length || 0}`);
-    assert(Array.isArray(matches) && matches.length > 0, 'Malformed coordinates parsed or bypassed gracefully without engine failure');
-  } catch (err) {
-    console.error('Edge Case 3 failed:', err);
     failedCount++;
   }
 
