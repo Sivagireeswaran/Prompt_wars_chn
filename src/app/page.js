@@ -85,14 +85,6 @@ export default function LandingPage() {
               </p>
             </div>
             <div className={`card ${styles.featureCard} animate-fade-in-up`}>
-              <div className={styles.featureIcon}>🛡️</div>
-              <h3>Safety Planning</h3>
-              <p>
-                Build a personalized safety plan with AI-generated coping
-                strategies, support contacts, and emergency resources.
-              </p>
-            </div>
-            <div className={`card ${styles.featureCard} animate-fade-in-up`}>
               <div className={styles.featureIcon}>📍</div>
               <h3>Recovery Clinics & Specialists</h3>
               <p>

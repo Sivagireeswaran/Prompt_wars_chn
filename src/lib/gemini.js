@@ -119,7 +119,8 @@ export async function generateCompanionResponse(messages, userContext = {}) {
       'hope', 'stress', 'clean', 'sober', 'addiction', 'drug', 'substance', 'alcohol', 'relapse',
       'withdrawal', 'detox', 'rehab', 'mental', 'health', 'what', 'how', 'why', 'tips', 'advice',
       'panic', 'scared', 'fear', 'overwhelm', 'lonely', 'numb', 'lost', 'tired', 'shame', 'guilt',
-      'yes', 'ok', 'sure', 'yeah', 'yep', 'please', 'tell', 'more', 'continue', 'strategy', 'strategies'
+      'yes', 'ok', 'sure', 'yeah', 'yep', 'please', 'tell', 'more', 'continue', 'strategy', 'strategies',
+      'better', 'calmer', 'good', 'worked', 'relaxed', 'thanks', 'thank', 'calm'
     ];
     
     const words = inputLower.split(/[^a-zA-Z]+/);
@@ -144,7 +145,13 @@ export async function generateCompanionResponse(messages, userContext = {}) {
         fallbackResponse = "Great! Here is a simple, evidence-based exercise called **Box Breathing**: Inhale quietly through your nose for 4 seconds, hold for 4 seconds, exhale slowly through your mouth for 4 seconds, and hold for 4 seconds. Try one cycle right now — how does your body feel? 🧘";
       }
     }
-    // 2. Educational / definitional questions
+    // 2. Handle positive progress feedback ("now i feel better", "calmer", "that worked", "thanks")
+    else if (inputLower.includes('better') || inputLower.includes('calmer') || inputLower.includes('good')
+      || inputLower.includes('worked') || inputLower.includes('relaxed') || inputLower.includes('thanks')
+      || inputLower.includes('thank')) {
+      fallbackResponse = "I'm so glad to hear you're feeling better! Celebrating these moments of calm and grounding is a key part of recovery. 💚 Whenever you're ready, we can talk about another strategy, or check in on how the rest of your day is going. What would feel most helpful right now?";
+    }
+    // 3. Educational / definitional questions
     else if (inputLower.includes('what is') || inputLower.includes('what are') || inputLower.includes('explain') || inputLower.includes('tell me about')) {
       if (inputLower.includes('drug') || inputLower.includes('substance') || inputLower.includes('recovery') || inputLower.includes('addiction')) {
         fallbackResponse = "Substance use recovery is the process of overcoming dependence on alcohol, drugs, or other substances. It involves physical detox, rebuilding mental health, and developing new coping skills. Recovery looks different for everyone — it may include therapy, medication-assisted treatment, peer support, or a combination. The most important thing to know: **recovery is possible**, and every small step forward counts. 💚 What aspect of recovery would you like to explore more?";
