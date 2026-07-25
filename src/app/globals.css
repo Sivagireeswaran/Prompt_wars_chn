@@ -490,3 +490,12 @@ textarea.input {
 .orb-accent {
   background: var(--accent-400);
 }
+
+/* Performance Optimization: Hardware Acceleration & Paint Hints */
+.animate-fade-in,
+.animate-fade-in-up,
+.orb,
+.spinner {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}

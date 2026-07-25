@@ -83,6 +83,9 @@ const VERIFIED_CLINICS_DATABASE = [
   }
 ];
 
+// In-Memory Search Result Cache for sub-millisecond efficiency
+const searchCache = new Map();
+
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -90,15 +93,26 @@ export async function POST(request) {
 
     const searchCity = String(city || '').trim().toLowerCase();
     const searchCat = String(category || 'All').trim();
+    const cacheKey = `${searchCity}:${searchCat}`;
 
-    // Filter by city and optional category
+    // 1. Fast Cache Hit
+    if (searchCache.has(cacheKey)) {
+      return NextResponse.json(searchCache.get(cacheKey), {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+          'X-Cache-Status': 'HIT',
+        },
+      });
+    }
+
+    // 2. Filter by city and optional category
     const matchedClinics = VERIFIED_CLINICS_DATABASE.filter(clinic => {
       const matchCity = !searchCity || clinic.city.toLowerCase().includes(searchCity) || searchCity.includes(clinic.city.toLowerCase());
       const matchCat = searchCat === 'All' || clinic.category === searchCat;
       return matchCity && matchCat;
     });
 
-    return NextResponse.json({
+    const responseData = {
       success: true,
       city: city || 'All',
       category: searchCat,
@@ -106,6 +120,17 @@ export async function POST(request) {
       clinics: matchedClinics,
       // Provide direct live Maps search fallback trigger
       liveMapsUrl: `https://www.google.com/maps/search/addiction+recovery+therapists+and+centers+in+${encodeURIComponent(city || 'India')}`
+    };
+
+    // Cache the result (keep max 100 entries)
+    if (searchCache.size > 100) searchCache.clear();
+    searchCache.set(cacheKey, responseData);
+
+    return NextResponse.json(responseData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'X-Cache-Status': 'MISS',
+      },
     });
   } catch (error) {
     console.error('Clinic Search API Error:', error);
