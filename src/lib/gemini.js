@@ -97,27 +97,12 @@ export async function generateCompanionResponse(messages, userContext = {}) {
       (k) => inputLower === k || inputLower.startsWith(k)
     );
 
-    // Offline heuristic guardrail: check if user query is completely off-topic
-    const allowedKeywords = [
-      'recovery', 'craving', 'anxious', 'feel', 'safe', 'help', 'crying', 'smoke', 'drink',
-      'coping', 'therapy', 'support', 'hello', 'hi', 'welcome', 'mira', 'recovrai', 'anxiety',
-      'peer', 'veteran', 'lifeline', 'breathe', 'pacer', 'anxiousness', 'depressed', 'sad',
-      'hope', 'stress', 'clean', 'sober', 'addiction', 'drug', 'substance', 'alcohol', 'relapse',
-      'withdrawal', 'detox', 'rehab', 'mental', 'health', 'what', 'how', 'why', 'tips', 'advice',
-      'panic', 'scared', 'fear', 'overwhelm', 'lonely', 'numb', 'lost', 'tired', 'shame', 'guilt',
-      'yes', 'ok', 'sure', 'yeah', 'yep', 'please', 'tell', 'more', 'continue', 'strategy', 'strategies',
-      'better', 'calmer', 'good', 'worked', 'relaxed', 'thanks', 'thank', 'calm'
-    ];
-    
-    const words = inputLower.split(/[^a-zA-Z]+/);
-    const isRelated = allowedKeywords.some((keyword) => {
-      if (keyword.length > 3) {
-        return inputLower.includes(keyword);
-      }
-      return words.includes(keyword);
-    });
-    
-    if (!isRelated && inputLower.length > 3) {
+    // Dynamic off-topic check for clear non-recovery queries (programming, recipes, math)
+    const isExplicitlyOffTopic = ['cookie', 'recipe', 'python', 'script', 'javascript', 'code', 'math', 'calc', 'game', 'football', 'cricket'].some(
+      (k) => inputLower.includes(k)
+    );
+
+    if (isExplicitlyOffTopic && inputLower.length > 5) {
       return "As your recovery companion, I can only assist with topics related to mental health, coping strategies, and substance use recovery. How can I support your recovery journey today?";
     }
 
