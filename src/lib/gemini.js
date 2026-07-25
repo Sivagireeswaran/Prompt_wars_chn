@@ -116,7 +116,17 @@ export async function generateCompanionResponse(messages, userContext = {}) {
         fallbackResponse = "Great! Here is a simple, evidence-based exercise called **Box Breathing**: Inhale quietly through your nose for 4 seconds, hold for 4 seconds, exhale slowly through your mouth for 4 seconds, and hold for 4 seconds. Try one cycle right now — how does your body feel? 🧘";
       }
     }
-    // 2. Handle positive progress feedback ("now i feel better", "calmer", "that worked", "thanks")
+    // 2. Handle specific technique questions ("how to delay this", "explain distract", "how to de-escalate")
+    else if (inputLower.includes('delay')) {
+      fallbackResponse = "To **Delay**, commit to waiting just 15 minutes before taking any action. Cravings naturally crest and subside within 10 to 15 minutes. Tell yourself: *'I don't have to decide right now, I will just wait 15 minutes.'* During those 15 minutes, switch environments or start a physical task. How does your body feel as we talk through this? 💚";
+    }
+    else if (inputLower.includes('distract')) {
+      fallbackResponse = "To **Distract**, engage your mind or body in an active task — like going for a short walk, washing dishes, or solving a puzzle. Shifting your focus starves the craving of mental energy. What is one simple activity around you right now? 🌿";
+    }
+    else if (inputLower.includes('de-escalate') || inputLower.includes('deescalate')) {
+      fallbackResponse = "To **De-escalate**, remind yourself that a craving is simply a temporary neurochemical wave — not a command. You do not have to act on it. Take slow, deliberate breaths and visualize the craving passing over you like a wave. You are in control. 🧘";
+    }
+    // 3. Handle positive progress feedback ("now i feel better", "calmer", "that worked", "thanks")
     else if (inputLower.includes('better') || inputLower.includes('calmer') || inputLower.includes('good')
       || inputLower.includes('worked') || inputLower.includes('relaxed') || inputLower.includes('thanks')
       || inputLower.includes('thank')) {
