@@ -1,0 +1,120 @@
+.authPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-lg);
+}
+
+.orb1 {
+  width: 350px;
+  height: 350px;
+  top: -80px;
+  left: -80px;
+}
+
+.orb2 {
+  width: 250px;
+  height: 250px;
+  bottom: -50px;
+  right: -50px;
+}
+
+.authContainer {
+  width: 100%;
+  max-width: 440px;
+  z-index: 1;
+}
+
+.authCard {
+  padding: var(--space-2xl);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.authHeader {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.authLogo {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.authHeader h1 {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-sm);
+}
+
+.authHeader p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.errorMsg {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: var(--space-md);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--space-md);
+  font-size: 0.9rem;
+  border: 1px solid #fecaca;
+}
+
+[data-theme="dark"] .errorMsg {
+  background: rgba(230, 57, 70, 0.15);
+  color: #fca5a5;
+  border-color: rgba(230, 57, 70, 0.3);
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.authSwitch {
+  text-align: center;
+  margin-top: var(--space-lg);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.switchBtn {
+  background: none;
+  border: none;
+  color: var(--primary-500);
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: var(--space-xs);
+  font-size: 0.9rem;
+}
+
+.switchBtn:hover {
+  color: var(--primary-700);
+  text-decoration: underline;
+}
+
+/* Google Sign-In Divider */
+.dividerBox {
+  display: flex;
+  align-items: center;
+  margin: var(--space-md) 0;
+  gap: var(--space-sm);
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.dividerText {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: lowercase;
+}
+

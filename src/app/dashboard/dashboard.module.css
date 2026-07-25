@@ -1,0 +1,150 @@
+.dashboard {
+  padding-bottom: 100px; /* Space for mobile bottom nav */
+}
+
+/* Welcome */
+.welcome {
+  margin-bottom: var(--space-2xl);
+}
+
+.greetingLabel {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.greetingName {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: var(--space-sm);
+}
+
+.greetingSub {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+/* Section title */
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+}
+
+/* Quick Actions */
+.actions {
+  margin-bottom: var(--space-2xl);
+}
+
+.actionCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.actionCard h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.actionCard p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.actionIcon {
+  font-size: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.actionArrow {
+  position: absolute;
+  right: var(--space-lg);
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+
+.actionCard:hover .actionArrow {
+  transform: translateX(4px);
+  color: var(--primary-500);
+}
+
+/* Affirmation */
+.affirmation {
+  margin-bottom: var(--space-2xl);
+}
+
+.affirmationCard {
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.affirmationIcon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.affirmationText {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+  line-height: 1.6;
+}
+
+.affirmationNote {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* Crisis */
+.crisis {
+  margin-bottom: var(--space-xl);
+}
+
+.crisisCard {
+  border-left: 4px solid var(--danger);
+}
+
+.crisisContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.crisisContent h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.crisisContent p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .greetingName { font-size: 1.7rem; }
+  .crisisContent { flex-direction: column; align-items: flex-start; }
+}
