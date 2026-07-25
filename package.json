@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --env-file=.env tests/test-gemini.mjs && node --env-file=.env tests/test-edge-cases.mjs"
+    "test": "node --env-file=.env tests/run-all-tests.mjs",
+    "test:unit": "node --env-file=.env tests/test-api-chat.mjs && node --env-file=.env tests/test-api-education.mjs",
+    "test:integration": "node --env-file=.env tests/test-api-clinic-search.mjs && node --env-file=.env tests/test-firebase-contacts.mjs",
+    "test:accessibility": "node --env-file=.env tests/test-deaf-accessibility.mjs",
+    "test:coverage": "node --env-file=.env tests/run-all-tests.mjs --coverage"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
